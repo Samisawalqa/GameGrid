@@ -3,21 +3,41 @@ import Header from "./Header";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
-export default function () {
+export default function Users() {
     const [users, setUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filter, setFilter] = useState('all');
 
     const fetchUsers = async () => {
         try {
-            const result = await axios("http://127.0.0.1:8001/user")
-            setUsers(result.data.data)
+            const result = await axios("http://127.0.0.1:8001/user");
+            setUsers(result.data.data);
         } catch (e) {
-
+            console.error(e); // Log any errors
         }
-    }
+    };
+
+    const handleUserSearch = (e) => {
+        if (e.target.id === "search-users") {
+            setSearchTerm(e.target.value);
+        } else {
+            setFilter(e.target.value);
+        }
+    };
 
     useEffect(() => {
-        fetchUsers()
-    }, [])
+        fetchUsers();
+    }, []);
+
+    // Filter users based on search term and selected filter
+    const filteredUsers = users.filter(user => {
+        const matchesSearchTerm = user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.username.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesFilter = filter === 'all' || user.role.toLowerCase() === filter.toLowerCase();
+
+        return matchesSearchTerm && matchesFilter;
+    });
+
 
     return <>
         <div className="app">
@@ -33,21 +53,13 @@ export default function () {
                                 <div className="page-utilities">
                                     <div className="row g-2 justify-content-start justify-content-md-end align-items-center">
                                         <div className="col-auto">
-                                            <form className="table-search-form row gx-1 align-items-center">
-                                                <div className="col-auto">
-                                                    <input type="text" id="search-users" name="search-users" className="form-control" placeholder="Search" />
-                                                </div>
-                                                <div className="col-auto">
-                                                    <button type="submit" className="btn app-btn-secondary">Search</button>
-                                                </div>
-                                            </form>
-                                        </div>{/*//col*/}
+                                            <input onChange={handleUserSearch} type="text" id="search-users" name="search-users" className="form-control" placeholder="Search" />
+                                        </div>
                                         <div className="col-auto">
-                                            <select className="form-select w-auto">
-                                                <option selected value="option-1">All</option>
-                                                <option value="option-2">This week</option>
-                                                <option value="option-3">This month</option>
-                                                <option value="option-4">Last 3 months</option>
+                                            <select onChange={handleUserSearch} className="form-select w-auto">
+                                                <option value="all">All</option>
+                                                <option value="user">Users</option>
+                                                <option value="owner">Owners</option>
                                             </select>
                                         </div>
                                         <div className="col-auto">
@@ -58,14 +70,12 @@ export default function () {
                                                 Add User
                                             </Link>
                                         </div>
-                                    </div>{/*//row*/}
-                                </div>{/*//table-utilities*/}
-                            </div>{/*//col-auto*/}
+                                    </div>
+                                </div>
+                            </div>
                         </div>{/*//row*/}
                         <nav id="orders-table-tab" className="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
                             <Link className="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" to="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</Link>
-                            {/* <Link className="flex-sm-fill text-sm-center nav-link" id="orders-paid-tab" data-bs-toggle="tab" to="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">Paid</Link>
-                            <Link className="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab" to="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">Pending</Link> */}
                             <Link className="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab" to="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">Cancelled</Link>
                         </nav>
                         <div className="tab-content" id="orders-table-tab-content">
@@ -79,32 +89,34 @@ export default function () {
                                                         <th className="cell">ID</th>
                                                         <th className="cell">Name</th>
                                                         <th className="cell">Username</th>
-                                                        <th className="cell">email</th>
-                                                        <th className="cell">address</th>
-                                                        <th className="cell">role</th>
+                                                        <th className="cell">Email</th>
+                                                        <th className="cell">Address</th>
+                                                        <th className="cell">Role</th>
                                                         <th className="cell">Status</th>
                                                         <th className="cell" />
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {users.length > 0 ? (
-                                                        users.map((user) => (user.deleted_at ? "" :
-                                                            <tr key={user.id}>
-                                                                <td className="cell">{user.id}</td>
-                                                                <td className="cell">{user.fullname}</td>
-                                                                <td className="cell">{user.username}</td>
-                                                                <td className="cell">{user.email}</td>
-                                                                <td className="cell">{user.address}</td>
-                                                                <td className="cell">{user.role}</td>
-                                                                <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                                <td className="cell">
-                                                                    <Link className="btn-sm app-btn-secondary" to={`/user/${user.id}`}>View</Link>
-                                                                </td>
-                                                            </tr>
+                                                    {filteredUsers.length > 0 ? (
+                                                        filteredUsers.map((user) => (
+                                                            user.deleted_at ? null : (
+                                                                <tr key={user.id}>
+                                                                    <td className="cell">{user.id}</td>
+                                                                    <td className="cell">{user.fullname}</td>
+                                                                    <td className="cell">{user.username}</td>
+                                                                    <td className="cell">{user.email}</td>
+                                                                    <td className="cell">{user.address}</td>
+                                                                    <td className="cell">{user.role}</td>
+                                                                    <td className="cell"><span className="badge bg-success">Paid</span></td>
+                                                                    <td className="cell">
+                                                                        <Link className="btn-sm app-btn-secondary" to={`/user/${user.id}`}>View</Link>
+                                                                    </td>
+                                                                </tr>
+                                                            )
                                                         ))
                                                     ) : (
                                                         <tr>
-                                                            <td colSpan="7" className="text-center">No users found</td>
+                                                            <td colSpan="8" className="text-center">No users found</td>
                                                         </tr>
                                                     )}
                                                     {/* <tr>
@@ -198,24 +210,26 @@ export default function () {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {users.length > 0 ? (
-                                                        users.map((user) => (user.deleted_at ?
-                                                            <tr key={user.id}>
-                                                                <td className="cell">{user.id}</td>
-                                                                <td className="cell">{user.fullname}</td>
-                                                                <td className="cell">{user.username}</td>
-                                                                <td className="cell">{user.email}</td>
-                                                                <td className="cell">{user.address}</td>
-                                                                <td className="cell">{user.role}</td>
-                                                                <td className="cell"><span className="badge bg-danger">Cancelled</span></td>
-                                                                <td className="cell">
-                                                                    <Link className="btn-sm app-btn-secondary" to="#">View</Link>
-                                                                </td>
-                                                            </tr> : ""
+                                                    {filteredUsers.length > 0 ? (
+                                                        filteredUsers.map((user) => (
+                                                            user.deleted_at ? (
+                                                                <tr key={user.id}>
+                                                                    <td className="cell">{user.id}</td>
+                                                                    <td className="cell">{user.fullname}</td>
+                                                                    <td className="cell">{user.username}</td>
+                                                                    <td className="cell">{user.email}</td>
+                                                                    <td className="cell">{user.address}</td>
+                                                                    <td className="cell">{user.role}</td>
+                                                                    <td className="cell"><span className="badge bg-danger">Cancelled</span></td>
+                                                                    <td className="cell">
+                                                                        <Link className="btn-sm app-btn-secondary" to={`/user/${user.id}`}>View</Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ) : null
                                                         ))
                                                     ) : (
                                                         <tr>
-                                                            <td colSpan="7" className="text-center">No users found</td>
+                                                            <td colSpan="8" className="text-center">No users found</td>
                                                         </tr>
                                                     )}
                                                 </tbody>
