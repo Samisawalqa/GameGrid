@@ -98,7 +98,7 @@ export default function () {
                                                                 <td className="cell">{user.role}</td>
                                                                 <td className="cell"><span className="badge bg-success">Paid</span></td>
                                                                 <td className="cell">
-                                                                    <Link className="btn-sm app-btn-secondary" to={"/user/" + user.id}>View</Link>
+                                                                    <Link className="btn-sm app-btn-secondary" to={`/user/${user.id}`}>View</Link>
                                                                 </td>
                                                             </tr>
                                                         ))

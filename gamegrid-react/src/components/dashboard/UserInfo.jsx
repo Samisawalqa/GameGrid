@@ -58,11 +58,11 @@ export default function () {
                                     </div>{/*//app-card-header*/}
                                     <div className="app-card-body px-4 w-100">
                                         <Item id="photo" label="Photo" value={<img className="profile-image rounded-circle" src="/assets/images/user.png" alt="" />} type="file" />
-                                        <Item id="role" label="Role" value={user.role} type="text" />
                                         <Item id="name" label="Name" value={user.firstname + ' ' + user.lastname} type="text" />
                                         <Item id="username" label="Username" value={"@" + user.username} type="text" />
                                         <Item id="email" label="Email" value={user.email} type="text" />
-                                        <Item id="address" label="Address" value={user.address} type="text" />
+                                        <Item id="address" label="Address" value={user.address} type="text" options={["Tafila", "Amman", "Aqaba", "Karak", "Ma'an", "Zarqa", "Salt", "Irbid"]} />
+                                        <Item id="role" label="Role" value={user.role} type="text" options={["user", "owner"]} />
                                     </div>{/*//app-card-body*/}
                                     <div className="app-card-footer p-4 mt-auto">
                                         <MDBdelete id={user.id} name={user.firstname} />

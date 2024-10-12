@@ -5,21 +5,8 @@ import { Link } from "react-router-dom";
 import Input from "./dashcomponents/Input";
 
 export default function CreateUser() {
-    const [users, setUsers] = useState([]);
-    const [formFeedback, setFormFeedback] = useState(""); // To store feedback (success/error messages)
+    const [formFeedback, setFormFeedback] = useState("");
 
-    const fetchUsers = async () => {
-        try {
-            const result = await axios.get("http://127.0.0.1:8001/user");
-            setUsers(result.data.data);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
