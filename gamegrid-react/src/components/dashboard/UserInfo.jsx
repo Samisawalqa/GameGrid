@@ -57,15 +57,53 @@ export default function () {
                                         </div>{/*//row*/}
                                     </div>{/*//app-card-header*/}
                                     <div className="app-card-body px-4 w-100">
-                                        <Item id="photo" label="Photo" value={<img className="profile-image rounded-circle" src="/assets/images/user.png" alt="" />} type="file" />
-                                        <Item id="name" label="Name" value={user.firstname + ' ' + user.lastname} type="text" />
-                                        <Item id="username" label="Username" value={"@" + user.username} type="text" />
-                                        <Item id="email" label="Email" value={user.email} type="text" />
-                                        <Item id="address" label="Address" value={user.address} type="text" options={["Tafila", "Amman", "Aqaba", "Karak", "Ma'an", "Zarqa", "Salt", "Irbid"]} />
-                                        <Item id="role" label="Role" value={user.role} type="text" options={["user", "owner"]} />
+                                        <Item
+                                            userid={user.id}
+                                            id="photo"
+                                            label="Photo"
+                                            value={<img className="profile-image rounded-circle" src="/assets/images/user.png" alt="" />}
+                                            type="file" />
+
+                                        <Item
+                                            userid={user.id}
+                                            id="fullname"
+                                            label="Fullname"
+                                            value={user.fullname}
+                                            type="text" />
+
+                                        <Item
+                                            userid={user.id}
+                                            id="username"
+                                            label="Username"
+                                            value={"@" + user.username}
+                                            type="text" />
+
+                                        <Item
+                                            userid={user.id}
+                                            id="email"
+                                            label="Email"
+                                            value={user.email}
+                                            type="text" />
+
+                                        <Item
+                                            userid={user.id}
+                                            id="address"
+                                            label="Address"
+                                            value={user.address}
+                                            type="text"
+                                            options={["Tafila", "Amman", "Aqaba", "Karak", "Ma'an", "Zarqa", "Salt", "Irbid"]} />
+
+                                        <Item
+                                            userid={user.id}
+                                            id="role"
+                                            label="Role"
+                                            value={user.role}
+                                            type="text"
+                                            options={["user", "owner"]} />
+
                                     </div>{/*//app-card-body*/}
                                     <div className="app-card-footer p-4 mt-auto">
-                                        <MDBdelete id={user.id} name={user.firstname} />
+                                        <MDBdelete id={user.id} name={user.fullname} />
                                         <Link to="/users" className="btn app-btn-secondary m-2">Back</Link>
                                     </div>{/*//app-card-footer*/}
                                 </div>{/*//app-card*/}

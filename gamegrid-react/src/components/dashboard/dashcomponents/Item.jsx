@@ -1,6 +1,7 @@
 import MDB from "./MDB";
 
-export default function ({ label, value, id, ...props }) {
+export default function ({ label, value, id, userid, ...props }) {
+
     return <div className="item border-bottom py-3">
         <div className="row justify-content-between align-items-center">
             <div className="col-auto">
@@ -9,7 +10,7 @@ export default function ({ label, value, id, ...props }) {
             </div>{/*//col*/}
             <div className="col text-end">
                 {/* <a className="btn-sm app-btn-secondary" href="#">Change</a> */}
-                <MDB id={id} label={label} {...props} />
+                <MDB userid={userid} id={id} label={label} {...props} />
             </div>{/*//col*/}
         </div>{/*//row*/}
     </div>

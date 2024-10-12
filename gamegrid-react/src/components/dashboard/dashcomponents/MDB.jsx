@@ -9,9 +9,37 @@ import {
     MDBModalBody,
     MDBModalFooter,
 } from 'mdb-react-ui-kit';
+import axios from '../../../api/axios';
+import { validateInput } from './InputsValidators'
 
-export default function ({ id, label, options, type }) {
+export default function ({ id, label, options, type, userid }) {
     const [basicModal, setBasicModal] = useState(false);
+    const [massage, setMassage] = useState('')
+
+    function handleUpdate(event) {
+        event.preventDefault();
+
+        const fd = new FormData(event.target);
+        const acquisitionChannel = fd.getAll("acquisition");
+        const data = Object.fromEntries(fd.entries());
+        data.acquisition = acquisitionChannel;
+
+        const [isValid, validMassage] = validateInput(data[id], id);
+        if (isValid) {
+
+            async function updateInfo() {
+                try {
+                    await axios.put(`http://127.0.0.1:8001/api/user/${userid}/${id}`, data);
+                    window.location.reload();
+                } catch (error) {
+
+                }
+            }
+            updateInfo();
+        } else {
+            setMassage(validMassage)
+        }
+    }
 
     const toggleOpen = () => setBasicModal(!basicModal);
 
@@ -26,20 +54,25 @@ export default function ({ id, label, options, type }) {
                             <button className='btn-close' color='none' onClick={toggleOpen}></button>
                         </MDBModalHeader>
 
-                        <MDBModalBody className='text-start'>
-                            {options ? <select className="form-control" name={id} id={id}>
-                                {options.map((option) =>
-                                    <option>{option}</option>
-                                )}
-                            </select> : <input type={type} name={id} className="form-control" id={id} required />}
-                        </MDBModalBody>
+                        <form onSubmit={handleUpdate}>
+                            <MDBModalBody className='text-start'>
+                                {options ? <select className="form-control" name={id} id={id}>
+                                    {options.map((option, index) =>
+                                        <option key={index}>{option}</option>
+                                    )}
+                                </select> : <input type={type} name={id} className="form-control" id={id} required />}
+                                <span className="text-danger text-sm">{massage}</span>
+                            </MDBModalBody>
 
-                        <MDBModalFooter>
-                            <button color='secondary' className="btn app-btn-secondary" onClick={toggleOpen}>
-                                Close
-                            </button>
-                            <button className="btn app-btn-primary">Save changes</button>
-                        </MDBModalFooter>
+                            <MDBModalFooter>
+                                <button color='secondary' className="btn app-btn-secondary" onClick={toggleOpen}>
+                                    Close
+                                </button>
+
+                                <button type="submit" className="btn app-btn-primary">Save changes</button>
+
+                            </MDBModalFooter>
+                        </form>
                     </MDBModalContent>
                 </MDBModalDialog>
             </MDBModal>

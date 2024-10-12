@@ -28,6 +28,8 @@ export default function CreateUser() {
             // Reset the form fields
             event.target.reset();
         } catch (error) {
+            console.log(error);
+
             setFormFeedback("Error creating user: " + error.message);
         }
     };
@@ -45,8 +47,7 @@ export default function CreateUser() {
                                 <div className="app-card app-card-settings shadow-sm p-4">
                                     <div className="app-card-body">
                                         <form onSubmit={handleSubmit} className="settings-form">
-                                            <Input id="firstname" label="Firstname" type="text" required />
-                                            <Input id="lastname" label="Lastname" type="text" required />
+                                            <Input id="fullname" label="Fullname" type="text" required />
                                             <Input id="username" label="Username" type="text" required />
                                             <Input id="email" label="Email" type="email" required />
                                             <Input id="address" label="Address" type="select" options={["Tafila", "Amman", "Aqaba", "Karak", "Ma'an", "Zarqa", "Salt", "Irbid"]} />

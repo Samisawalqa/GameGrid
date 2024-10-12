@@ -24,9 +24,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|string|max:255',
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'fullname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'address' => 'required|string',
             'role' => 'required|string',
@@ -36,8 +35,7 @@ class UserController extends Controller
         // Now proceed to create the user
         $user = new User();
         $user->username = $request->username;
-        $user->firstname = $request->firstname;
-        $user->lastname = $request->lastname;
+        $user->fullname = $request->fullname;
         $user->email = $request->email;
         $user->address = $request->address;
         $user->role = $request->role;
@@ -59,9 +57,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, string $detail)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->$detail = $request->$detail;
+        $user->save();
     }
 
     /**

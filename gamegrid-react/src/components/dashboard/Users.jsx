@@ -35,7 +35,7 @@ export default function () {
                                         <div className="col-auto">
                                             <form className="table-search-form row gx-1 align-items-center">
                                                 <div className="col-auto">
-                                                    <input type="text" id="search-orders" name="searchorders" className="form-control search-orders" placeholder="Search" />
+                                                    <input type="text" id="search-users" name="search-users" className="form-control" placeholder="Search" />
                                                 </div>
                                                 <div className="col-auto">
                                                     <button type="submit" className="btn app-btn-secondary">Search</button>
@@ -91,7 +91,7 @@ export default function () {
                                                         users.map((user) => (user.deleted_at ? "" :
                                                             <tr key={user.id}>
                                                                 <td className="cell">{user.id}</td>
-                                                                <td className="cell">{user.firstname}</td>
+                                                                <td className="cell">{user.fullname}</td>
                                                                 <td className="cell">{user.username}</td>
                                                                 <td className="cell">{user.email}</td>
                                                                 <td className="cell">{user.address}</td>
@@ -166,7 +166,7 @@ export default function () {
                                         </div>{/*//table-responsive*/}
                                     </div>{/*//app-card-body*/}
                                 </div>{/*//app-card*/}
-                                <nav className="app-pagination">
+                                {/*<nav className="app-pagination">
                                     <ul className="pagination justify-content-center">
                                         <li className="page-item disabled">
                                             <Link className="page-link" to="#" tabIndex={-1} aria-disabled="true">Previous</Link>
@@ -178,7 +178,7 @@ export default function () {
                                             <Link className="page-link" to="#">Next</Link>
                                         </li>
                                     </ul>
-                                </nav>{/*//app-pagination*/}
+                                </nav>//app-pagination*/}
                             </div>{/*//tab-pane*/}
                             <div className="tab-pane fade" id="orders-cancelled" role="tabpanel" aria-labelledby="orders-cancelled-tab">
                                 <div className="app-card app-card-orders-table mb-5">
@@ -202,7 +202,7 @@ export default function () {
                                                         users.map((user) => (user.deleted_at ?
                                                             <tr key={user.id}>
                                                                 <td className="cell">{user.id}</td>
-                                                                <td className="cell">{user.firstname}</td>
+                                                                <td className="cell">{user.fullname}</td>
                                                                 <td className="cell">{user.username}</td>
                                                                 <td className="cell">{user.email}</td>
                                                                 <td className="cell">{user.address}</td>
