@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
+            $table->string("field_name")->unique();
+            $table->text("field_description")->nullable();
+            $table->string("field_address")->nullable();
+            $table->integer("field_capacity")->unsigned();
+            $table->integer("price_per_hour")->unsigned();
+            $table->foreignIdFor(App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

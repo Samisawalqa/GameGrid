@@ -56,7 +56,7 @@ export default function CreateUser() {
                                             <Input id="password_confirmation" label="Confirm Password" type="password" required />
                                             <button type="submit" className="btn app-btn-primary m-1">Create User</button>
                                             <button type="reset" className="btn app-btn-primary m-1">Reset</button>
-                                            <Link to="/users"><button type="button" className="btn app-btn-secondary m-1">Cancel</button></Link>
+                                            <Link to="/users"><button type="button" className="btn app-btn-secondary m-1">Back</button></Link>
                                         </form>
                                         {/* Feedback display */}
                                         {formFeedback && (

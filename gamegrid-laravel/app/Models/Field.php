@@ -9,5 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Field extends Model
 {
 
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
+    protected $gaurded = [];
 }
