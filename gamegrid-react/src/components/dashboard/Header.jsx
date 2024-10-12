@@ -9,7 +9,7 @@ export default function () {
         e.preventDefault();
         setSidepanelIsHidden(isHidden => !isHidden);
     }
-    console.log(window.innerWidth);
+
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 1190) {
@@ -60,7 +60,7 @@ export default function () {
                                         <div className="item p-3">
                                             <div className="row gx-2 justify-content-between align-items-center">
                                                 <div className="col-auto">
-                                                    <img className="profile-image" src="assets/images/profiles/profile-1.png" alt />
+                                                    <img className="profile-image" src="/assets/images/profiles/profile-1.png" alt />
                                                 </div>{/*//col*/}
                                                 <div className="col">
                                                     <div className="info">
@@ -111,7 +111,7 @@ export default function () {
                                         <div className="item p-3">
                                             <div className="row gx-2 justify-content-between align-items-center">
                                                 <div className="col-auto">
-                                                    <img className="profile-image" src="assets/images/profiles/profile-2.png" alt />
+                                                    <img className="profile-image" src="/assets/images/profiles/profile-2.png" alt />
                                                 </div>{/*//col*/}
                                                 <div className="col">
                                                     <div className="info">
@@ -138,7 +138,7 @@ export default function () {
                                 </Link>
                             </div>{/*//app-utility-item*/}
                             <div className="app-utility-item app-user-dropdown dropdown">
-                                <Link className="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img className="rounded-circle" src="assets/images/user.png" alt="user profile" /></Link>
+                                <Link className="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img className="rounded-circle" src="/assets/images/user.png" alt="user profile" /></Link>
                                 <ul className="dropdown-menu" aria-labelledby="user-dropdown-toggle">
                                     <li><Link className="dropdown-item" href="account.html">Account</Link></li>
                                     <li><Link className="dropdown-item" href="settings.html">Settings</Link></li>
@@ -156,7 +156,7 @@ export default function () {
             <div className="sidepanel-inner d-flex flex-column">
                 <Link href="#" id="sidepanel-close" onClick={sidepanelToggler} className="sidepanel-close d-xl-none">×</Link>
                 <div className="app-branding">
-                    <Link className="app-logo" href="index.html"><img className="logo-icon me-2 rounded-circle" src="assets/images/gamegrid-logo.png" alt="logo" /><span className="logo-text">GameGrid</span></Link>
+                    <Link className="app-logo" href="index.html"><img className="logo-icon me-2 rounded-circle" src="/assets/images/gamegrid-logo.png" alt="logo" /><span className="logo-text">GameGrid</span></Link>
                 </div>{/*//app-branding*/}
                 <nav id="app-nav-main" className="app-nav app-nav-main flex-grow-1">
                     <ul className="app-menu list-unstyled accordion" id="menu-accordion">
