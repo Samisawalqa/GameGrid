@@ -1,6 +1,46 @@
+import { useEffect, useState } from "react";
 import Header from "./Header";
+import axios from 'axios';
+import { Link } from "react-router-dom";
 
-export default function () {
+export default function Fields() {
+    const [fields, setFields] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filter, setFilter] = useState('all');
+
+    const fetchFields = async () => {
+        try {
+            const result = await axios("http://127.0.0.1:8001/fields");
+            setFields(result.data.data);
+        } catch (e) {
+            console.error(e); // Log any errors
+        }
+    };
+
+    const handleFieldSearch = (e) => {
+        if (e.target.id === "search-users") {
+            setSearchTerm(e.target.value);
+        } else {
+            setFilter(e.target.value);
+        }
+    };
+
+    useEffect(() => {
+        fetchFields();
+    }, []);
+
+    // Filter users based on search term and selected filter
+    const filteredFields = fields.filter(field => {
+        const matchesSearchTerm = field.field_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            field.field_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            field.id == searchTerm ||
+            field.field_address.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesFilter = filter === 'all' || field.role.toLowerCase() === filter.toLowerCase();
+
+        return matchesSearchTerm && matchesFilter;
+    });
+
+
     return <>
         <div className="app">
             <Header />
@@ -15,41 +55,36 @@ export default function () {
                                 <div className="page-utilities">
                                     <div className="row g-2 justify-content-start justify-content-md-end align-items-center">
                                         <div className="col-auto">
-                                            <form className="table-search-form row gx-1 align-items-center">
-                                                <div className="col-auto">
-                                                    <input type="text" id="search-orders" name="searchorders" className="form-control search-orders" placeholder="Search" />
-                                                </div>
-                                                <div className="col-auto">
-                                                    <button type="submit" className="btn app-btn-secondary">Search</button>
-                                                </div>
-                                            </form>
-                                        </div>{/*//col*/}
+                                            <input onChange={handleFieldSearch} type="text" id="search-users" name="search-users" className="form-control" placeholder="Search" />
+                                        </div>
                                         <div className="col-auto">
-                                            <select className="form-select w-auto">
-                                                <option selected value="option-1">All</option>
-                                                <option value="option-2">This week</option>
-                                                <option value="option-3">This month</option>
-                                                <option value="option-4">Last 3 months</option>
+                                            <select onChange={handleFieldSearch} className="form-select w-auto">
+                                                <option value="all">All</option>
+                                                {/* <option value="user">Users</option>
+                                                <option value="owner">Owners</option> */}
                                             </select>
                                         </div>
                                         <div className="col-auto">
-                                            <a className="btn app-btn-secondary" href="#">
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-download me-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fillRule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                                    <path fillRule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                            <Link className="btn app-btn-secondary" to="/AddField">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="2em" height="1em" fill="currentColor">
+                                                    <rect x="1" y="1" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" />
+                                                    <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="2" fill="none" />
+                                                    <line x1="12" y1="1" x2="12" y2="23" stroke="currentColor" stroke-width="2" />
+                                                    <rect x="1" y="8" width="4" height="8" stroke="currentColor" stroke-width="2" fill="none" />
+                                                    <rect x="19" y="8" width="4" height="8" stroke="currentColor" stroke-width="2" fill="none" />
+                                                    <rect x="1" y="5" width="6" height="14" stroke="currentColor" stroke-width="2" fill="none" />
+                                                    <rect x="17" y="5" width="6" height="14" stroke="currentColor" stroke-width="2" fill="none" />
                                                 </svg>
-                                                Download CSV
-                                            </a>
+                                                Add Field
+                                            </Link>
                                         </div>
-                                    </div>{/*//row*/}
-                                </div>{/*//table-utilities*/}
-                            </div>{/*//col-auto*/}
+                                    </div>
+                                </div>
+                            </div>
                         </div>{/*//row*/}
                         <nav id="orders-table-tab" className="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-                            <a className="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" href="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</a>
-                            <a className="flex-sm-fill text-sm-center nav-link" id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid" role="tab" aria-controls="orders-paid" aria-selected="false">Paid</a>
-                            <a className="flex-sm-fill text-sm-center nav-link" id="orders-pending-tab" data-bs-toggle="tab" href="#orders-pending" role="tab" aria-controls="orders-pending" aria-selected="false">Pending</a>
-                            <a className="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab" href="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">Cancelled</a>
+                            <Link className="flex-sm-fill text-sm-center nav-link active" id="orders-all-tab" data-bs-toggle="tab" to="#orders-all" role="tab" aria-controls="orders-all" aria-selected="true">All</Link>
+                            <Link className="flex-sm-fill text-sm-center nav-link" id="orders-cancelled-tab" data-bs-toggle="tab" to="#orders-cancelled" role="tab" aria-controls="orders-cancelled" aria-selected="false">Cancelled</Link>
                         </nav>
                         <div className="tab-content" id="orders-table-tab-content">
                             <div className="tab-pane fade show active" id="orders-all" role="tabpanel" aria-labelledby="orders-all-tab">
@@ -59,179 +94,60 @@ export default function () {
                                             <table className="table app-table-hover mb-0 text-left">
                                                 <thead>
                                                     <tr>
-                                                        <th className="cell">Order</th>
-                                                        <th className="cell">Product</th>
-                                                        <th className="cell">Customer</th>
-                                                        <th className="cell">Date</th>
+                                                        <th className="cell">ID</th>
+                                                        <th className="cell">Name</th>
+                                                        <th className="cell">Description</th>
+                                                        <th className="cell">Address</th>
+                                                        <th className="cell">Capacity</th>
+                                                        <th className="cell">Price per hour</th>
+                                                        <th className="cell">Owner ID</th>
                                                         <th className="cell">Status</th>
-                                                        <th className="cell">Total</th>
                                                         <th className="cell" />
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td className="cell">#15346</td>
-                                                        <td className="cell"><span className="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                                        <td className="cell">John Sanders</td>
-                                                        <td className="cell"><span>17 Oct</span><span className="note">2:16 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$259.35</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15345</td>
-                                                        <td className="cell"><span className="truncate">Consectetur adipiscing elit</span></td>
-                                                        <td className="cell">Dylan Ambrose</td>
-                                                        <td className="cell"><span className="cell-data">16 Oct</span><span className="note">03:16 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-warning">Pending</span></td>
-                                                        <td className="cell">$96.20</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15344</td>
-                                                        <td className="cell"><span className="truncate">Pellentesque diam imperdiet</span></td>
-                                                        <td className="cell">Teresa Holland</td>
-                                                        <td className="cell"><span className="cell-data">16 Oct</span><span className="note">01:16 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$123.00</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15343</td>
-                                                        <td className="cell"><span className="truncate">Vestibulum a accumsan lectus sed mollis ipsum</span></td>
-                                                        <td className="cell">Jayden Massey</td>
-                                                        <td className="cell"><span className="cell-data">15 Oct</span><span className="note">8:07 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$199.00</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15342</td>
-                                                        <td className="cell"><span className="truncate">Justo feugiat neque</span></td>
-                                                        <td className="cell">Reina Brooks</td>
-                                                        <td className="cell"><span className="cell-data">12 Oct</span><span className="note">04:23 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-danger">Cancelled</span></td>
-                                                        <td className="cell">$59.00</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15341</td>
-                                                        <td className="cell"><span className="truncate">Morbi vulputate lacinia neque et sollicitudin</span></td>
-                                                        <td className="cell">Raymond Atkins</td>
-                                                        <td className="cell"><span className="cell-data">11 Oct</span><span className="note">11:18 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$678.26</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
+                                                    {filteredFields.length > 0 ? (
+                                                        filteredFields.map((field) => (
+                                                            field.deleted_at ? null : (
+                                                                <tr key={field.id}>
+                                                                    <td className="cell">{field.id}</td>
+                                                                    <td className="cell">{field.field_name}</td>
+                                                                    <td className="cell">{field.field_description}</td>
+                                                                    <td className="cell">{field.field_address}</td>
+                                                                    <td className="cell">{field.field_capacity}</td>
+                                                                    <td className="cell">{field.price_per_hour}</td>
+                                                                    <td className="cell">{field.user_id}</td>
+                                                                    <td className="cell"><span className="badge bg-success">Active</span></td>
+                                                                    <td className="cell">
+                                                                        <Link className="btn-sm app-btn-secondary" to={`/field/${field.id}`}>View</Link>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan="8" className="text-center">No fields found</td>
+                                                        </tr>
+                                                    )}
+
                                                 </tbody>
                                             </table>
                                         </div>{/*//table-responsive*/}
                                     </div>{/*//app-card-body*/}
                                 </div>{/*//app-card*/}
-                                <nav className="app-pagination">
+                                {/*<nav className="app-pagination">
                                     <ul className="pagination justify-content-center">
                                         <li className="page-item disabled">
-                                            <a className="page-link" href="#" tabIndex={-1} aria-disabled="true">Previous</a>
+                                            <Link className="page-link" to="#" tabIndex={-1} aria-disabled="true">Previous</Link>
                                         </li>
-                                        <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                                        <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                        <li className="page-item"><a className="page-link" href="#">3</a></li>
+                                        <li className="page-item active"><Link className="page-link" to="#">1</Link></li>
+                                        <li className="page-item"><Link className="page-link" to="#">2</Link></li>
+                                        <li className="page-item"><Link className="page-link" to="#">3</Link></li>
                                         <li className="page-item">
-                                            <a className="page-link" href="#">Next</a>
+                                            <Link className="page-link" to="#">Next</Link>
                                         </li>
                                     </ul>
-                                </nav>{/*//app-pagination*/}
-                            </div>{/*//tab-pane*/}
-                            <div className="tab-pane fade" id="orders-paid" role="tabpanel" aria-labelledby="orders-paid-tab">
-                                <div className="app-card app-card-orders-table mb-5">
-                                    <div className="app-card-body">
-                                        <div className="table-responsive">
-                                            <table className="table mb-0 text-left">
-                                                <thead>
-                                                    <tr>
-                                                        <th className="cell">Order</th>
-                                                        <th className="cell">Product</th>
-                                                        <th className="cell">Customer</th>
-                                                        <th className="cell">Date</th>
-                                                        <th className="cell">Status</th>
-                                                        <th className="cell">Total</th>
-                                                        <th className="cell" />
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td className="cell">#15346</td>
-                                                        <td className="cell"><span className="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                                        <td className="cell">John Sanders</td>
-                                                        <td className="cell"><span>17 Oct</span><span className="note">2:16 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$259.35</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15344</td>
-                                                        <td className="cell"><span className="truncate">Pellentesque diam imperdiet</span></td>
-                                                        <td className="cell">Teresa Holland</td>
-                                                        <td className="cell"><span className="cell-data">16 Oct</span><span className="note">01:16 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$123.00</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15343</td>
-                                                        <td className="cell"><span className="truncate">Vestibulum a accumsan lectus sed mollis ipsum</span></td>
-                                                        <td className="cell">Jayden Massey</td>
-                                                        <td className="cell"><span className="cell-data">15 Oct</span><span className="note">8:07 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$199.00</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15341</td>
-                                                        <td className="cell"><span className="truncate">Morbi vulputate lacinia neque et sollicitudin</span></td>
-                                                        <td className="cell">Raymond Atkins</td>
-                                                        <td className="cell"><span className="cell-data">11 Oct</span><span className="note">11:18 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$678.26</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>{/*//table-responsive*/}
-                                    </div>{/*//app-card-body*/}
-                                </div>{/*//app-card*/}
-                            </div>{/*//tab-pane*/}
-                            <div className="tab-pane fade" id="orders-pending" role="tabpanel" aria-labelledby="orders-pending-tab">
-                                <div className="app-card app-card-orders-table mb-5">
-                                    <div className="app-card-body">
-                                        <div className="table-responsive">
-                                            <table className="table mb-0 text-left">
-                                                <thead>
-                                                    <tr>
-                                                        <th className="cell">Order</th>
-                                                        <th className="cell">Product</th>
-                                                        <th className="cell">Customer</th>
-                                                        <th className="cell">Date</th>
-                                                        <th className="cell">Status</th>
-                                                        <th className="cell">Total</th>
-                                                        <th className="cell" />
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td className="cell">#15345</td>
-                                                        <td className="cell"><span className="truncate">Consectetur adipiscing elit</span></td>
-                                                        <td className="cell">Dylan Ambrose</td>
-                                                        <td className="cell"><span className="cell-data">16 Oct</span><span className="note">03:16 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-warning">Pending</span></td>
-                                                        <td className="cell">$96.20</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>{/*//table-responsive*/}
-                                    </div>{/*//app-card-body*/}
-                                </div>{/*//app-card*/}
+                                </nav>//app-pagination*/}
                             </div>{/*//tab-pane*/}
                             <div className="tab-pane fade" id="orders-cancelled" role="tabpanel" aria-labelledby="orders-cancelled-tab">
                                 <div className="app-card app-card-orders-table mb-5">
@@ -240,31 +156,40 @@ export default function () {
                                             <table className="table mb-0 text-left">
                                                 <thead>
                                                     <tr>
-                                                        <th className="cell">Order</th>
-                                                        <th className="cell">Product</th>
-                                                        <th className="cell">Customer</th>
-                                                        <th className="cell">Date</th>
+                                                        <th className="cell">ID</th>
+                                                        <th className="cell">Name</th>
+                                                        <th className="cell">address</th>
                                                         <th className="cell">Status</th>
-                                                        <th className="cell">Total</th>
                                                         <th className="cell" />
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td className="cell">#15342</td>
-                                                        <td className="cell"><span className="truncate">Justo feugiat neque</span></td>
-                                                        <td className="cell">Reina Brooks</td>
-                                                        <td className="cell"><span className="cell-data">12 Oct</span><span className="note">04:23 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-danger">Cancelled</span></td>
-                                                        <td className="cell">$59.00</td>
-                                                        <td className="cell"><a className="btn-sm app-btn-secondary" href="#">View</a></td>
-                                                    </tr>
+                                                    {filteredFields.length > 0 ? (
+                                                        filteredFields.map((field) => (
+                                                            field.deleted_at ? (
+                                                                <tr key={field.id}>
+                                                                    <td className="cell">{field.id}</td>
+                                                                    <td className="cell">{field.field_name}</td>
+                                                                    <td className="cell">{field.field_address}</td>
+                                                                    <td className="cell"><span className="badge bg-danger">Cancelled</span></td>
+                                                                    <td className="cell">
+                                                                        <Link className="btn-sm app-btn-secondary" to={`/field/${field.id}`}>View</Link>
+                                                                    </td>
+                                                                </tr>
+                                                            ) : null
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td colSpan="8" className="text-center">No fields found</td>
+                                                        </tr>
+                                                    )}
                                                 </tbody>
                                             </table>
                                         </div>{/*//table-responsive*/}
                                     </div>{/*//app-card-body*/}
                                 </div>{/*//app-card*/}
                             </div>{/*//tab-pane*/}
+
                         </div>{/*//tab-content*/}
                     </div>{/*//container-fluid*/}
                 </div>{/*//app-content*/}

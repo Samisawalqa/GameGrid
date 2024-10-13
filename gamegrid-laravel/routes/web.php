@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Http\Controllers\UserController;
+use App\Http\Resources\FieldResource;
 use App\Models\Field;
 
 Route::get('/', function () {
@@ -26,6 +27,11 @@ Route::get('/fields', function () {
  
 Route::get('/user/{id}', function (string $id) {
     return new UserResource(User::findOrFail($id));
+});
+
+ 
+Route::get('/field/{id}', function (string $id) {
+    return new FieldResource(Field::findOrFail($id));
 });
 
 

@@ -12,24 +12,24 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axios from '../../../api/axios';
 
-export default function ({ id, name }) {
+export default function ({ id, name, dataType }) {
     const [basicModal, setBasicModal] = useState(false);
     const navigate = useNavigate();
     const toggleOpen = () => setBasicModal(!basicModal);
 
-    function handleUserDelete(e) {
+    function handleDelete(e) {
         e.preventDefault();
 
-        const deleteUser = async () => {
+        const deleteObject = async () => {
             try {
-                await axios.delete(`http://127.0.0.1:8001/api/user/${id}`);
-                navigate("/users"); // Redirect to the users list after deletion
+                await axios.delete(`http://127.0.0.1:8001/api/${dataType}/${id}`);
+                navigate(-1);
             } catch (error) {
                 console.error('Error deleting user:', error);
             }
         };
 
-        deleteUser();
+        deleteObject();
     }
 
 
@@ -46,7 +46,7 @@ export default function ({ id, name }) {
                         <MDBModalBody className='text-start'>Are you sure you want to delete <strong>{name}</strong>!</MDBModalBody>
 
                         <MDBModalFooter>
-                            <form onSubmit={handleUserDelete}>
+                            <form onSubmit={handleDelete}>
                                 <button type="submit" className="btn btn-danger">Delete</button>
                             </form>
                             <button color='secondary' className="btn app-btn-secondary" onClick={toggleOpen}>

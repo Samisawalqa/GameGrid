@@ -103,7 +103,7 @@ export default function () {
 
                                     </div>{/*//app-card-body*/}
                                     <div className="app-card-footer p-4 mt-auto">
-                                        <MDBdelete id={user.id} name={user.fullname} />
+                                        <MDBdelete id={user.id} name={user.fullname} dataType="user" />
                                         <Link to="/users" className="btn app-btn-secondary m-2">Back</Link>
                                     </div>{/*//app-card-footer*/}
                                 </div>{/*//app-card*/}

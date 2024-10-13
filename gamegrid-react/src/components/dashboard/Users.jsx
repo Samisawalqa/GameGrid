@@ -32,7 +32,9 @@ export default function Users() {
     // Filter users based on search term and selected filter
     const filteredUsers = users.filter(user => {
         const matchesSearchTerm = user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.username.toLowerCase().includes(searchTerm.toLowerCase());
+            user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.id == searchTerm ||
+            user.address.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesFilter = filter === 'all' || user.role.toLowerCase() === filter.toLowerCase();
 
         return matchesSearchTerm && matchesFilter;
@@ -60,6 +62,7 @@ export default function Users() {
                                                 <option value="all">All</option>
                                                 <option value="user">Users</option>
                                                 <option value="owner">Owners</option>
+                                                <option value="admin">Admin</option>
                                             </select>
                                         </div>
                                         <div className="col-auto">
@@ -107,7 +110,7 @@ export default function Users() {
                                                                     <td className="cell">{user.email}</td>
                                                                     <td className="cell">{user.address}</td>
                                                                     <td className="cell">{user.role}</td>
-                                                                    <td className="cell"><span className="badge bg-success">Paid</span></td>
+                                                                    <td className="cell"><span className="badge bg-success">Active</span></td>
                                                                     <td className="cell">
                                                                         <Link className="btn-sm app-btn-secondary" to={`/user/${user.id}`}>View</Link>
                                                                     </td>
@@ -119,60 +122,7 @@ export default function Users() {
                                                             <td colSpan="8" className="text-center">No users found</td>
                                                         </tr>
                                                     )}
-                                                    {/* <tr>
-                                                        <td className="cell">#15346</td>
-                                                        <td className="cell"><span className="truncate">Lorem ipsum dolor sit amet eget volutpat erat</span></td>
-                                                        <td className="cell">John Sanders</td>
-                                                        <td className="cell"><span>17 Oct</span><span className="note">2:16 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$259.35</td>
-                                                        <td className="cell"><Link className="btn-sm app-btn-secondary" to="#">View</Link></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15345</td>
-                                                        <td className="cell"><span className="truncate">Consectetur adipiscing elit</span></td>
-                                                        <td className="cell">Dylan Ambrose</td>
-                                                        <td className="cell"><span className="cell-data">16 Oct</span><span className="note">03:16 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-warning">Pending</span></td>
-                                                        <td className="cell">$96.20</td>
-                                                        <td className="cell"><Link className="btn-sm app-btn-secondary" to="#">View</Link></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15344</td>
-                                                        <td className="cell"><span className="truncate">Pellentesque diam imperdiet</span></td>
-                                                        <td className="cell">Teresa Holland</td>
-                                                        <td className="cell"><span className="cell-data">16 Oct</span><span className="note">01:16 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$123.00</td>
-                                                        <td className="cell"><Link className="btn-sm app-btn-secondary" to="#">View</Link></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15343</td>
-                                                        <td className="cell"><span className="truncate">Vestibulum a accumsan lectus sed mollis ipsum</span></td>
-                                                        <td className="cell">Jayden Massey</td>
-                                                        <td className="cell"><span className="cell-data">15 Oct</span><span className="note">8:07 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$199.00</td>
-                                                        <td className="cell"><Link className="btn-sm app-btn-secondary" to="#">View</Link></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15342</td>
-                                                        <td className="cell"><span className="truncate">Justo feugiat neque</span></td>
-                                                        <td className="cell">Reina Brooks</td>
-                                                        <td className="cell"><span className="cell-data">12 Oct</span><span className="note">04:23 PM</span></td>
-                                                        <td className="cell"><span className="badge bg-danger">Cancelled</span></td>
-                                                        <td className="cell">$59.00</td>
-                                                        <td className="cell"><Link className="btn-sm app-btn-secondary" to="#">View</Link></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td className="cell">#15341</td>
-                                                        <td className="cell"><span className="truncate">Morbi vulputate lacinia neque et sollicitudin</span></td>
-                                                        <td className="cell">Raymond Atkins</td>
-                                                        <td className="cell"><span className="cell-data">11 Oct</span><span className="note">11:18 AM</span></td>
-                                                        <td className="cell"><span className="badge bg-success">Paid</span></td>
-                                                        <td className="cell">$678.26</td>
-                                                        <td className="cell"><Link className="btn-sm app-btn-secondary" to="#">View</Link></td>
-                                                    </tr> */}
+                                                  
                                                 </tbody>
                                             </table>
                                         </div>{/*//table-responsive*/}
