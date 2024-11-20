@@ -23,7 +23,7 @@ export default function CreateUser() {
         }
 
         try {
-            await axios.post("http://127.0.0.1:8001/api/user", data);
+            await axios.post("http://127.0.0.1:8001/user", data);
             setFormFeedback("User created successfully.");
             // Reset the form fields
             event.target.reset();
@@ -47,7 +47,7 @@ export default function CreateUser() {
                                 <div className="app-card app-card-settings shadow-sm p-4">
                                     <div className="app-card-body">
                                         <form onSubmit={handleSubmit} className="settings-form">
-                                            <Input id="fullname" label="Fullname" type="text" required />
+                                            <Input id="name" label="name" type="text" required />
                                             <Input id="username" label="Username" type="text" required />
                                             <Input id="email" label="Email" type="email" required />
                                             <Input id="address" label="Address" type="select" options={["Tafila", "Amman", "Aqaba", "Karak", "Ma'an", "Zarqa", "Salt", "Irbid"]} />

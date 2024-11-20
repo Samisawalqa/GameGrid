@@ -66,9 +66,9 @@ export default function () {
 
                                         <Item
                                             userid={user.id}
-                                            id="fullname"
-                                            label="Fullname"
-                                            value={user.fullname}
+                                            id="name"
+                                            label="name"
+                                            value={user.name}
                                             type="text" />
 
                                         <Item
@@ -103,7 +103,7 @@ export default function () {
 
                                     </div>{/*//app-card-body*/}
                                     <div className="app-card-footer p-4 mt-auto">
-                                        <MDBdelete id={user.id} name={user.fullname} dataType="user" />
+                                        <MDBdelete id={user.id} name={user.name} dataType="user" />
                                         <Link to="/users" className="btn app-btn-secondary m-2">Back</Link>
                                     </div>{/*//app-card-footer*/}
                                 </div>{/*//app-card*/}

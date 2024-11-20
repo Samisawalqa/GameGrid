@@ -1,23 +1,28 @@
+import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
 
 export default function () {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const navigate = useNavigate();
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
-            await axios.post("/login", { email, password })
-            setEmail("")
-            setPassword("")
-            navigate("");
-        } catch (e) {
-            console.log(e);
+            const response = await axios.post('http://localhost:8000/api/login', {
+                email,
+                password,
+            }, {
+                withCredentials: true,
+            });
+
+            alert(response.data.message);
+            // Optionally, store user information or token
+        } catch (err) {
+            setError(err.response?.data?.message || 'An error occurred');
         }
-    }
+    };
+
 
     return <div className="row g-0 app-auth-wrapper overflow-hidden">
         <div className="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">

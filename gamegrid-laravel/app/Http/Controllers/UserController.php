@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'username' => 'required|string|max:255|unique:users',
-            'fullname' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'address' => 'required|string',
             'role' => 'required|string',
@@ -35,7 +35,7 @@ class UserController extends Controller
         // Now proceed to create the user
         $user = new User();
         $user->username = $request->username;
-        $user->fullname = $request->fullname;
+        $user->name = $request->name;
         $user->email = $request->email;
         $user->address = $request->address;
         $user->role = $request->role;

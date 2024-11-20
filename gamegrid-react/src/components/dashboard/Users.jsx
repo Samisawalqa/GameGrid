@@ -31,7 +31,7 @@ export default function Users() {
 
     // Filter users based on search term and selected filter
     const filteredUsers = users.filter(user => {
-        const matchesSearchTerm = user.fullname.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        const matchesSearchTerm = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
             user.id == searchTerm ||
             user.address.toLowerCase().includes(searchTerm.toLowerCase());
@@ -105,7 +105,7 @@ export default function Users() {
                                                             user.deleted_at ? null : (
                                                                 <tr key={user.id}>
                                                                     <td className="cell">{user.id}</td>
-                                                                    <td className="cell">{user.fullname}</td>
+                                                                    <td className="cell">{user.name}</td>
                                                                     <td className="cell">{user.username}</td>
                                                                     <td className="cell">{user.email}</td>
                                                                     <td className="cell">{user.address}</td>
@@ -122,7 +122,7 @@ export default function Users() {
                                                             <td colSpan="8" className="text-center">No users found</td>
                                                         </tr>
                                                     )}
-                                                  
+
                                                 </tbody>
                                             </table>
                                         </div>{/*//table-responsive*/}
@@ -165,7 +165,7 @@ export default function Users() {
                                                             user.deleted_at ? (
                                                                 <tr key={user.id}>
                                                                     <td className="cell">{user.id}</td>
-                                                                    <td className="cell">{user.fullname}</td>
+                                                                    <td className="cell">{user.name}</td>
                                                                     <td className="cell">{user.username}</td>
                                                                     <td className="cell">{user.email}</td>
                                                                     <td className="cell">{user.address}</td>

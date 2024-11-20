@@ -25,7 +25,7 @@ class UserFactory extends Factory
     {
         return [
             'username' => $this->faker->userName,
-            'fullname' => $this->faker->firstName,
+            'name' => $this->faker->firstName,
             'role' => $this->faker->randomElement(['user', 'owner', 'admin']), // example roles
             'address' => $this->faker->address,
             'email' => $this->faker->unique()->safeEmail,

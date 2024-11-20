@@ -3,7 +3,7 @@ export function validateInput(value, type) {
     let message = '';
 
     switch (type) {
-        case 'fullname':
+        case 'name':
             if (typeof value !== 'string' || value.trim() === '') {
                 message = 'Full name must be a non-empty string.';
                 break;
